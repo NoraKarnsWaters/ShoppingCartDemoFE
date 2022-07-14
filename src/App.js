@@ -2,19 +2,27 @@ import React, { Component } from 'react';
 
 export default class App extends Component {
     static displayName = App.name;
+    createLine = () => {
+        var joined = this.state.cart;
+        this.setState(
+            {
+                cart: [...joined, { id: joined.length + 1, name: "his", qty: 12, price: 104.99 }]
+            }            
+        );
+    }
 
     constructor(props) {
         super(props);
-        this.state = { forecasts: [], loading: true };
+        this.state = { cart: [{ id: 0, name: "hi", qty: 1, price: 10.99 }], loading: false };
     }
 
-    componentDidMount() {
-        this.populateWeatherData();
-    }
+    
+    
+    
 
-    static renderCartTable() {
+    static renderCartTable(cart) {
         return (
-            <table className='table table-striped table-border'>
+            <table>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -25,18 +33,21 @@ export default class App extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <td><input placeholder="test" /></td>
-                    <td><input placeholder="test" /></td>
-                    <td>$0</td>
-                    <td>$0</td>
+                    {cart.map(row => (
+                        <tr>
+                            <td><input value={row.name} /></td>
+                            <td><input value={row.qty} /></td>
+                            <td><input value={row.price} /></td>
+                            <td>$0</td>
+                            <td>$0</td>
+                        </tr>
+                    ))}
                 </tbody>
-                <tfoot>
-                    <button>New</button>
-                </tfoot>
             </table>
         );
     }
 
+    /*
     static renderForecastsTable(forecasts) {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
@@ -61,24 +72,19 @@ export default class App extends Component {
             </table>
         );
     }
+    */
+
 
     render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderCartTable();
+        let contents = App.renderCartTable(this.state.cart);
 
         return (
             <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
                 {contents}
+                <button onClick={this.createLine}>New</button>
             </div>
         );
     }
 
-    async populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
-    }
+
 }
