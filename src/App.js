@@ -69,7 +69,7 @@ export default class App extends Component {
                 </thead>
                 <tbody>
                     {cart.map(row => (
-                        <tr key={row.id}>
+                        <tr key={row.id} scope="row">
                             <td><input type="text" value={row.name} onChange={(e) => handleChange("name", row, e)}/></td>
                             <td><input type="number" value={row.qty} onChange={(e) => handleChange("qty", row, e)} /></td>
                             <td>$<NumberFormat value={row.price} allowNegative={false} allowEmptyFormatting={true} displayType={'input'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} onChange={(e) => handleChange("price", row, e)} /></td>
