@@ -30,8 +30,19 @@ export default class App extends Component {
         var val = e.target.value;
         console.log(val);
 
-        if (key === "qty" || key === "price")
-            val = parseFloat(val.replace(/,/g, ''));
+        if (key === "qty" || key === "price") {
+            if (key === "price") { 
+                val = parseFloat(val.replace(/,/g, ''));
+                if (val <= .00)
+                    val = 0.00;
+            }
+
+            else if (key === "qty") {
+                val = parseInt(val.replace(/,/g, ''));
+                if (val <= 1)
+                    val = 1;
+            }   
+        }
 
         newCart[row.id - 1][key] = val;
         var total = this.getSum(newCart);
@@ -72,8 +83,8 @@ export default class App extends Component {
                         <tr key={row.id} scope="row">
                             <td><input type="text" value={row.name} onChange={(e) => handleChange("name", row, e)}/></td>
                             <td><input type="number" value={row.qty} onChange={(e) => handleChange("qty", row, e)} /></td>
-                            <td>$<NumberFormat value={row.price} allowNegative={false} allowEmptyFormatting={true} displayType={'input'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} onChange={(e) => handleChange("price", row, e)} /></td>
-                            <td><NumberFormat value={row.price} allowNegative={false} allowEmptyFormatting={true} displayType={'text'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} prefix={'$'} /></td>
+                            <td>$<NumberFormat value={row.price} allowNegative={false} displayType={'input'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} onChange={(e) => handleChange("price", row, e)} /></td>
+                            <td><NumberFormat value={row.price} allowNegative={false} displayType={'text'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} prefix={'$'} /></td>
                             <td><NumberFormat value={row.price * row.qty} allowNegative={false} allowEmptyFormatting={true} displayType={'text'} isNumericString={true} decimalScale={2} fixedDecimalScale={true} thousandSeparator={true} prefix={'$'} /></td>
                         </tr>
                     ))}
